@@ -54,13 +54,21 @@ public class MainActivity extends AppCompatActivity {
                     validation = false;
                 }
 
+
+                float excessPrizeForPeopleWoMS;
                 float excessPrizeForEveryone = (excessPrize - (howManyPeopleWithoutMS * msRecover)) / howManyPeople;
+                if (excessPrizeForEveryone > 0 ) {
+
+                    excessPrizeForPeopleWoMS = excessPrizeForEveryone + msRecover;
+                } else {
+                    excessPrizeForEveryone = 0;
+                    excessPrizeForPeopleWoMS = excessPrize / howManyPeopleWithoutMS;
+                }
+
                 DecimalFormat df = new DecimalFormat();
                 df.setMaximumFractionDigits(2);
                 String ForPeopleWithMS = df.format(excessPrizeForEveryone);
-                float excessPrizeForPeopleWoMS = excessPrizeForEveryone + msRecover;
                 String ForPeopleWoMS = df.format(excessPrizeForPeopleWoMS);
-
 
                 if (courtPrize <= 0) {
                     System.out.println("Court prize - too low");
