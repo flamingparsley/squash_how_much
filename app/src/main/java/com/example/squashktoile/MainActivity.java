@@ -30,53 +30,52 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 float courtPrize;
-                float msRecovery;
+                float msRecover;
                 float howManyMS;
                 float howManyPeople;
 
                 boolean validation = true;
 
-                courtPrize =giveMeFloat(String.valueOf(editTextNumberCourtPrize.getText()));
-                msRecovery =giveMeFloat(String.valueOf(editTextNumberMSrecovery.getText()));
-                howManyMS = giveMeFloat(String.valueOf(editTextNumberHowManyMS.getText()));
-                howManyPeople = giveMeFloat(String.valueOf(editTextNumberHowManyPeople.getText()));
-                int howManyCourts = (int) Math.floor(howManyPeople/2);
-                System.out.println("howManyCourts " + howManyCourts);
+                courtPrize = giveMeInteger(String.valueOf(editTextNumberCourtPrize.getText()));
+                msRecover = giveMeInteger(String.valueOf(editTextNumberMSrecovery.getText()));
+                howManyMS = giveMeInteger(String.valueOf(editTextNumberHowManyMS.getText()));
+                howManyPeople = giveMeInteger(String.valueOf(editTextNumberHowManyPeople.getText()));
 
+
+                int howManyCourts = (int) Math.floor(howManyPeople/2);
 
 
                 float totalPrize = courtPrize * howManyCourts;
-                float excessPrize = totalPrize - msRecovery * howManyMS;
-                float howManyPeopleWithoutMS = Math.max(0, howManyPeople - howManyMS);
+                float excessPrize = totalPrize - msRecover * howManyMS;
+                float howManyPeopleWithoutMS = (float) Math.max(0, howManyPeople - howManyMS);
+                System.out.println("koko howManyPeopleWithoutMS: " + howManyPeopleWithoutMS);
                 if (howManyPeopleWithoutMS < 0) {
-                    System.out.println("Mniej osób niż osób :D");
+                    System.out.println("People without MS less than 0");
                     validation = false;
-
                 }
 
-                float excessPrizeForEveryone = (excessPrize - (howManyPeopleWithoutMS * msRecovery)) / howManyPeople;
+                float excessPrizeForEveryone = (excessPrize - (howManyPeopleWithoutMS * msRecover)) / howManyPeople;
                 DecimalFormat df = new DecimalFormat();
                 df.setMaximumFractionDigits(2);
                 String ForPeopleWithMS = df.format(excessPrizeForEveryone);
-                float excessPrizeForPeopleWoMS = excessPrizeForEveryone + msRecovery;
+                float excessPrizeForPeopleWoMS = excessPrizeForEveryone + msRecover;
                 String ForPeopleWoMS = df.format(excessPrizeForPeopleWoMS);
 
 
-
                 if (courtPrize <= 0) {
-                    System.out.println("za mało za kort");
+                    System.out.println("Court prize - too low");
                     validation = false;
                 }
-                if (msRecovery <= 0) {
-                    System.out.println("za mało dopłaty z MultiSporta");
+                if (msRecover <= 0) {
+                    System.out.println("MultiSport recover - too low");
                     validation = false;
                 }
-                if (howManyPeople <= 1) {
-                    System.out.println("za mało osób");
+                if (howManyPeople <= 1.0) {
+                    System.out.println("Amount of people - too low");
                     validation = false;
                 }
                 if (howManyPeople - howManyMS < 0) {
-                    System.out.println("Więcej kart MS niż osób");
+                    System.out.println("More MS cards than people");
                     validation = false;
                 }
 
@@ -91,23 +90,20 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     textViewWithoutMS.setText("");
                 }
-
-
             }
 
-            float giveMeFloat(String strNumber) {
+            float giveMeInteger(String strNumber) {
                 if (strNumber != null && strNumber.length() > 0) {
                     try {
-                        return Float.parseFloat(strNumber);
+                        return Integer.parseInt(strNumber);
                     } catch(Exception e) {
-                        System.out.println("Ooooo nieeee" + e);
+                        System.out.println("Oh no! Exception! " + e);
                         return 0;
                     }
                 }
                 else {
                     return 0;}
             }
-
 
         });
 
